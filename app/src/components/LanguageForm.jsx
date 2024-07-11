@@ -297,3 +297,72 @@ const LanguageForm = () => {
 };
 
 export default LanguageForm;
+
+
+// import React, { useEffect } from 'react';
+// import { useForm, useFieldArray } from 'react-hook-form';
+
+// const technologiesList = ["JavaScript", "Python", "Java", "C++"];
+
+// const TechnologyForm = ({ existingData }) => {
+//   const { control, handleSubmit, register, watch, reset, formState: { errors } } = useForm({
+//     defaultValues: {
+//       technologies: technologiesList.map((tech) => ({ name: tech, selected: false, level: '' })),
+//     },
+//   });
+
+//   const { fields } = useFieldArray({
+//     control,
+//     name: 'technologies',
+//   });
+
+//   useEffect(() => {
+//     if (existingData) {
+//       reset({ technologies: existingData });
+//     }
+//   }, [existingData, reset]);
+
+//   const onSubmit = data => {
+//     console.log(data);
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit(onSubmit)}>
+//       <h3>Select Technologies and Proficiency Levels</h3>
+//       {fields.map((field, index) => (
+//         <div key={field.id}>
+//           <label>
+//             <input
+//               type="checkbox"
+//               {...register(`technologies.${index}.selected`)}
+//             />
+//             {field.name}
+//           </label>
+//           {["basic", "intermediate", "expert"].map((level) => (
+//             <label key={level}>
+//               <input
+//                 type="radio"
+//                 value={level}
+//                 {...register(`technologies.${index}.level`, {
+//                   required: watch(`technologies.${index}.selected`) ? 'Please select a level' : false
+//                 })}
+//                 disabled={!watch(`technologies.${index}.selected`)}
+//               />
+//               {level.charAt(0).toUpperCase() + level.slice(1)}
+//             </label>
+//           ))}
+//           {errors.technologies?.[index]?.level && (
+//             <p>{errors.technologies[index].level.message}</p>
+//           )}
+//         </div>
+//       ))}
+//       {errors.technologies && (
+//         <p>{errors.technologies.message}</p>
+//       )}
+//       <button type="submit">Submit</button>
+//     </form>
+//   );
+// };
+
+// export default TechnologyForm;
+
