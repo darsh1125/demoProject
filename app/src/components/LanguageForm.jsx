@@ -472,3 +472,84 @@
 // upsertUserWithEducation(1, userData, educationDetails)
 //   .then(() => console.log('Upsert operation completed'))
 //   .catch(error => console.error('Error in upsert operation', error));
+/************************************************************************************/
+
+// import { User } from './models/User';
+// import { EducationDetail } from './models/EducationDetail';
+
+// interface EducationInput {
+//   id?: number; // This will help to identify existing records
+//   courseName: string;
+//   passingYear: number;
+//   percentage: number;
+// }
+
+// async function upsertUserWithEducation(userId: number, userData: { name: string; email: string; age: number }, educationDetails: EducationInput[]) {
+//   // Upsert user data
+//   const [user, created] = await User.upsert({ id: userId, ...userData });
+
+//   // Fetch the user instance with existing education details
+//   const userInstance = await User.findByPk(user.id, { include: [EducationDetail] });
+
+//   if (!userInstance) {
+//     throw new Error('User not found after upsert.');
+//   }
+
+//   // Extract existing education detail IDs
+//   const existingEducationIds = userInstance.educationDetails.map(detail => detail.id);
+
+//   // Extract incoming education detail IDs
+//   const incomingEducationIds = educationDetails.map(detail => detail.id).filter(id => id !== undefined);
+
+//   // Identify education details to remove
+//   const educationIdsToRemove = existingEducationIds.filter(id => !incomingEducationIds.includes(id));
+
+//   // Destroy education details that are not in the incoming data
+//   if (educationIdsToRemove.length > 0) {
+//     await EducationDetail.destroy({
+//       where: {
+//         id: educationIdsToRemove,
+//         userId: user.id,
+//       },
+//     });
+//   }
+
+//   // Upsert (create or update) education details
+//   for (const detail of educationDetails) {
+//     if (detail.id) {
+//       // Check if the education detail exists
+//       const existingDetail = await EducationDetail.findOne({
+//         where: { id: detail.id, userId: user.id },
+//       });
+
+//       if (existingDetail) {
+//         // Update existing education detail
+//         await EducationDetail.update(detail, {
+//           where: { id: detail.id, userId: user.id },
+//         });
+//       } else {
+//         // If the education detail with the given id does not exist, create a new one
+//         await EducationDetail.create({ ...detail, userId: user.id });
+//       }
+//     } else {
+//       // Create new education detail
+//       await EducationDetail.create({ ...detail, userId: user.id });
+//     }
+//   }
+// }
+
+// // Example usage
+// const userData = {
+//   name: 'John Doe',
+//   email: 'john.doe@example.com',
+//   age: 30,
+// };
+
+// const educationDetails = [
+//   { id: 1, courseName: 'BSc Computer Science', passingYear: 2015, percentage: 85.5 }, // existing
+//   { courseName: 'MSc Computer Science', passingYear: 2017, percentage: 90.0 } // new
+// ];
+
+// upsertUserWithEducation(1, userData, educationDetails)
+//   .then(() => console.log('Upsert operation completed'))
+//   .catch(error => console.error('Error in upsert operation', error));
